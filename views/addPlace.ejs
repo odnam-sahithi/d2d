@@ -1,0 +1,196 @@
+<% layout('layout/boilerplate') %>
+
+    <style>
+        body {
+            background-color: #EFFFFD;
+        }
+        .add{
+            text-decoration: none;
+            color: #404448;
+            font-weight: 400;
+            font-size: 18px;
+            padding: 3px;
+            background-color: #DDE0E3;
+            border: 1px solid #8d9491;
+            cursor: pointer;
+        }
+        .add:hover{
+            background-color: white;
+            border: 1px solid #939598;
+            color: black;     
+        }
+    </style>
+
+    <div class="container col-lg-6 col-md d-flex flex-column justify-content-center position-relative border border-light py-2"
+        style=" height: auto;">
+        <div class="card shadow mb-5">
+
+            <div class="card-body">
+
+                <h4 class="card-title text-center" style="font-family: monospace;">Add Place</h4>
+
+                <form action="/addPlace" method="post" enctype="multipart/form-data" class="needs-validation my-2"
+                    novalidate>
+
+                    <div class="form-group mb-2">
+                        <label for="name1">Name</label>
+                        <input type="text" class="form-control" name="name" id="name1"
+                            value="<%= name.length != 0 ? name : '' %>" required>
+                        <div class="valid-feedback">
+                            Looks Great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please name the place.
+                        </div>
+                    </div>
+
+
+                    <div class="form-group mb-2">
+                        <label for="location1">Location</label>
+                        <input type="text" class="form-control" name="location" id="location1"
+                            value="<%= location.length != 0 ? location : '' %>" required>
+                        <div class="valid-feedback">
+                            Looks Great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please add the location.
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group mb-2">
+                        <label for="description1">Description</label>
+                        <textarea class="form-control" id="description1" rows="3" name="description"
+                            required><%=description.length!=0?description:''%></textarea>
+                        <div class="valid-feedback">
+                            Looks Great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide a description about the place.
+                        </div>
+                    </div>
+
+
+                    <div class="form-group mb-2">
+                        <label for="contact1">Contact:</label>
+                        <input type="number" class="form-control" name="contact" id="contact1" minlength=""
+                            pattern="[7|9|9]{3}-[0-9]{3}-[0-9]{4}" value="<%= contact != 0 ? contact : '' %>" required>
+                        <div class="valid-feedback">
+                            Looks Great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide contact details.
+                        </div>
+                    </div>
+
+
+                    <div class="form-group mb-3">
+                        <label for="category1">Category</label>
+                        <select class="form-select" name="category" id="category1">
+
+                            <option value="groceryStore" <%=category==='groceryStore' ? 'selected' : '' %>>Grocery store</option>
+                            <option value="restaurant" <%=category==='restaurant' ? 'selected' : '' %>>Restaurant
+                            </option>
+                            <option value="stationary" <%=category==='stationary' ? 'selected' : '' %>>Stationary</option>
+                            <option value="sweetStall" <%=category==='sweetStall' ? 'selected' : '' %>>Sweet Stall
+                            </option>
+                            <option value="others" <%=category==='others' ? 'selected' : '' %>>Others</option>
+                        </select>
+                    </div>
+
+
+
+                    <div class="input-group mb-3 custom-file">
+                        <input type="file" class="form-control" id="images" name="images" multiple required>
+                        <label for="images" class="custom-file-label form-control"></label>
+                        <div class="valid-feedback">
+                            Looks Great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please share few clicks of the place.
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="wrap" style="display: flex;align-items: center;align-content: center;flex-wrap: nowrap;flex-direction: row;">
+                            <h2 style="margin: 0 20px 0 0;font-family: monospace;">Menu</h2>
+                            <p href="#" class="add" style="border-radius: 2px;margin: 0 20px 0 0;" >Add</p>
+                        </div>
+
+                        <div class="inp-group"></div>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-success my-2">Add</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <script>
+        const addBtn = document.querySelector(".add");
+
+        const input = document.querySelector(".inp-group");
+
+        function removeInput() {
+            this.parentElement.remove();
+        }
+
+        function addInput() {
+            const name = document.createElement("input");
+            name.type = "text";
+            name.placeholder = "Item name";
+            name.setAttribute('name', 'items');
+            name.setAttribute('required', '');
+            name.setAttribute('class', "form-control");
+            // name.setAttribute('class', 'col-')
+            name.style.margin = "5px";
+
+            const price = document.createElement("input");
+            price.type = "number";
+            price.placeholder = "price";
+            price.setAttribute('name', 'cost');
+            price.setAttribute('required', '');
+            price.setAttribute('class', "form-control");
+            price.style.margin = "5px";
+
+            const btn = document.createElement("span");
+            btn.className = "delete";
+            btn.innerHTML = "&#128465;";
+            btn.style.margin = "8px 5px";
+            btn.style.fontSize = "20px";
+            btn.style.cursor = "pointer";
+
+            btn.addEventListener("click", removeInput);
+
+            // const good = document.createElement("div");
+            // good.className = "valid-feedback";
+            // good.innerHTML = "Looks Great!";
+
+            // const notgood = document.createElement("div");
+            // notgood.className = "invalid-feedback";
+            // notgood.innerHTML = "Provide correct info";
+
+            const flex = document.createElement("div");
+            flex.className = "flex";
+            flex.style.display = "flex";
+            flex.style.flexWrap = "nowrap";
+            flex.style.margin = "5px";
+
+            input.appendChild(flex);
+            flex.appendChild(name);
+            flex.appendChild(price);
+            flex.appendChild(btn);
+            // flex.appendChild(good);
+            // flex.appendChild(notgood);
+            
+        }
+
+        addBtn.addEventListener("click", addInput);
+    </script>

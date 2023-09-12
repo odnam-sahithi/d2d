@@ -1,0 +1,459 @@
+<% layout('layout/boilerplate') %>
+
+    <link rel="stylesheet" href="/stylesheets/stars.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300&display=swap" rel="stylesheet">
+
+
+
+    <style>
+        /* @import url(https://raw.github.com/FortAwesome/Font-Awesome/master/docs/assets/css/font-awesome.min.css); */
+
+        body {
+            background-color: #f6f6f6;
+            font-family: cera-round-pro, "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-weight: 400;
+        }
+
+        .review_display:hover {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.02), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        @media (max-width:991px) {
+            .flexdir {
+                display: flex;
+            }
+
+            .mp {
+                height: 30vh;
+                width: 110vw;
+            }
+        }
+
+        .carousel .item {
+            height: 100px;
+        }
+
+        .item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            min-height: 100px;
+        }
+
+        .menucard:before {
+            content: '\2630';
+            font-size: 35px;
+        }
+    </style>
+    <style>
+        #wrap {
+            margin: 5px;
+            display: inline-block;
+            position: relative;
+            height: 60px;
+            float: right;
+            padding: 0;
+            position: relative;
+        }
+
+        #search {
+            height: 58px;
+            font-size: 22px;
+            display: inline-block;
+            font-family: "Lato";
+            font-weight: 100;
+            border: none;
+            outline: none;
+            color: #555;
+            padding: 3px;
+            padding-right: 60px;
+            width: 0px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: none;
+            z-index: 3;
+            transition: width .4s cubic-bezier(0.000, 0.795, 0.000, 1.000);
+            cursor: pointer;
+        }
+
+        #search:focus:hover {
+            border-bottom: 1px solid #BBB;
+        }
+
+        #search:focus {
+            width: 300px;
+            z-index: 1;
+            border-bottom: 1px solid #BBB;
+            cursor: text;
+        }
+
+        @media screen and (max-width: 500px) {
+            #search:focus {
+                width: 50vw;
+                z-index: 1;
+                border-bottom: 1px solid #BBB;
+                cursor: text;
+            }
+        }
+
+        #search_submit {
+            height: 67px;
+            width: 63px;
+            display: inline-block;
+            color: red;
+            float: right;
+            background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADNQTFRFU1NT9fX1lJSUXl5e1dXVfn5+c3Nz6urqv7+/tLS0iYmJqampn5+fysrK39/faWlp////Vi4ZywAAABF0Uk5T/////////////////////wAlrZliAAABLklEQVR42rSWWRbDIAhFHeOUtN3/ags1zaA4cHrKZ8JFRHwoXkwTvwGP1Qo0bYObAPwiLmbNAHBWFBZlD9j0JxflDViIObNHG/Do8PRHTJk0TezAhv7qloK0JJEBh+F8+U/hopIELOWfiZUCDOZD1RADOQKA75oq4cvVkcT+OdHnqqpQCITWAjnWVgGQUWz12lJuGwGoaWgBKzRVBcCypgUkOAoWgBX/L0CmxN40u6xwcIJ1cOzWYDffp3axsQOyvdkXiH9FKRFwPRHYZUaXMgPLeiW7QhbDRciyLXJaKheCuLbiVoqx1DVRyH26yb0hsuoOFEPsoz+BVE0MRlZNjGZcRQyHYkmMp2hBTIzdkzCTc/pLqOnBrk7/yZdAOq/q5NPBH1f7x7fGP4C3AAMAQrhzX9zhcGsAAAAASUVORK5CYII=) center center no-repeat;
+            text-indent: -10000px;
+            border: none;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 2;
+            cursor: pointer;
+            opacity: 0.4;
+            cursor: pointer;
+            transition: opacity .4s ease;
+        }
+
+        #search_submit:hover {
+            opacity: 0.8;
+        }
+    </style>
+
+    <div class="container">
+        <div class="row flexdir">
+
+            <!--images-->
+            <div class="col-12 col-lg-6" style="margin-bottom:10px; margin-top:10px;">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <% if(place.images.length>2){ %>
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                                class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                                aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                aria-label="Slide 3"></button>
+                        </div>
+                        <% } %>
+                            <% if(place.images.length==2){ %>
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#carouselExampleIndicators"
+                                        data-bs-slide-to="0" class="active" aria-current="true"
+                                        aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#carouselExampleIndicators"
+                                        data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                </div>
+                                <% } %>
+                                    <div class="carousel-inner">
+                                        <% place.images.forEach((img, i)=> { %>
+                                            <div class="carousel-item <%= i=== 0 ? 'active' : ''%>">
+                                                <img src="<%= img.url %>" class="d-block w-100" alt="" height="480px">
+                                            </div>
+                                            <% }) %>
+                                    </div>
+                                    <% if(place.images.length!=1){ %>
+                                        <button class="carousel-control-prev" type="button"
+                                            data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button"
+                                            data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                        <% } %>
+                </div>
+
+            </div>
+
+            <!--details-->
+            <div class="col-12 col-lg-6 mx-auto px-auto"
+                style="margin-bottom:10px; margin-top:10px; font-family: 'Akshar', sans-serif; font-size:20px; font-weight:550;">
+
+                <div class="card" style="width:100%; background-color: rgb(245, 245, 245, 0.4);border: none;">
+                    <div class="card-header">
+                        <div class="">
+                            <span style="font-weight:1000; margin-right:4vw;  font-size:20px;">
+                                <%= place.name %>
+                            </span>
+                            <% if(avgRating !==-1){ %>
+                                <span style="color: gold;font-size: 20px;position: relative; right: 6px;">&starf;</span>
+                                <span style="position: relative;right: 6px;">
+                                    <%= avgRating.toFixed(1) %> ( <%= place.reviews.length %> )
+                                </span>
+                                <% }else{ %>
+                                    <span style="position: relative;right: 6px;"> <span
+                                            style="font-size: 20px;">&#128513;</span> Be
+                                        the first to rate</span>
+                                    <% } %>
+                        </div>
+                    </div>
+
+                    <% var lo=place.location.charAt(0).toUpperCase() + place.location.toString().slice(1); %>
+                        <% var ca=place.category.charAt(0).toUpperCase() + place.category.toString().slice(1); %>
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <i class="material-icons"
+                                        style="font-size:22px;position: relative;top: 5px;right: 4px;">
+                                        place</i>
+                                    <span>
+                                        <%= lo %>
+                                    </span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span style="margin-right:5px;" class="text-muted">Contact:</span>
+                                    <span>
+                                        <a href="tel:<%=place.contact %>" style="text-decoration: none;color: black;">
+                                            <%= place.contact %>
+                                        </a>
+                                    </span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span>
+                                        <%= place.description %>
+                                    </span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span style="margin-right:5px;" class="text-muted">Category: </span>
+                                    <span>
+                                        <%= ca %>
+                                    </span>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <form action="http://maps.google.com/maps" method="get" target="_blank">
+                                        <label for="saddr">Enter your location</label>
+                                        <input type="text" name="saddr" value="" />
+                                        <input type="hidden" name="daddr" value="<%= lo %>" />
+                                        <button type="submit" class="btn"
+                                            style="background-color:#45898e; color: white;font-size: 20px;">Directions
+                                            <img src="https://maps.gstatic.com/consumer/images/icons/2x/ic_directions_gm_blue_24px.png"
+                                                height="25px"></button>
+                                    </form>
+                                </li>
+
+                                <!-- <li class="list-group-item">
+                                                <span style="margin-right:5px;">Owner: <%#= place.owner.name %> </span>
+                                            </li> -->
+
+
+                            </ul>
+
+                            <% if( currentUser && place.owner.id===currentUser.id) {%>
+
+                                <div class="card-body d-flex flex-row">
+                                    <a href="/place/<%= place.id %>" class="btn btn-primary me-3"
+                                        style="font-size: 18px;">Update</a>
+                                    <form action="/place/<%= place.id %>?_method=DELETE" method="post">
+                                        <button type="submit" class="btn btn-danger"
+                                            style="font-size: 18px;">Delete</button>
+                                    </form>
+                                </div>
+
+                                <% } %>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+        </br>
+
+        <div class="row">
+
+            <!--menu-->
+            <div class="col-12 col-lg-5"
+                style="margin-bottom:10px; margin-top:10px; font-family: cera-round-pro, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:20px; font-weight:350;">
+                <% var j=0 %>
+                    <div style="display: flex;justify-content: space-between;">
+                        <span class="menucard" style="font-size: 26px;"> MENU</span>
+
+                        <div id="wrap">
+                            <form action="" autocomplete="on">
+                                <input id="search" name="search" type="text" placeholder="Search">
+                                <input id="search_submit" value="Rechercher" type="submit">
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="card" id="menusection" style="background-color: #45898e; color: white;">
+                        <% for(let i of place.items) {%>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="padding: 10px;">
+                                    <%= i %>
+                                </span>
+                                <span style="padding: 10px">
+                                    <%= place.cost[j] %>
+                                </span>
+                            </div>
+
+                            <% j++; %>
+                                <% } %>
+                    </div>
+            </div>
+
+
+            <!--REVIEWS-->
+            <div class="col-12 col-lg-6 mx-auto px-auto"
+                style="margin-bottom:10px; margin-top:10px;padding-left: 5.5vw;">
+                <% if(currentUser){ %>
+
+                    <span
+                        style="font-family: cera-round-pro, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 32px;">Add
+                        a Review</span>
+
+                    <form action="/addReview/<%= place.id %>" method="POST" class="mb-3" style="width: 90%;" novalidate>
+
+                        <fieldset class="starability-grow">
+
+                            <input type="radio" id="first-rate1" name="review[rating]" value="1" checked />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+
+                        </fieldset>
+
+                        <div class="mb-3">
+                            <label for="body" class="form-label"
+                                style="font-family: cera-round-pro, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 22px;">Review</label>
+                            <textarea class="form-control" style="min-width: 100%" name="review[body]" id="body"
+                                cols="30" rows="5" required></textarea>
+                            <div class="valid-feedback">
+                                Looks Great!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please leave a review.
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-success btn" style="background-color: #45898e;">Add
+                            Review</button>
+                    </form>
+                    <% } else{%>
+                        <div class="alert alert-warning m-2 text-center" role="alert">
+                            <% if(place.reviews.length>0) { %>
+                                <h6> <span> <a href="/auth/google" style="text-decoration:none;">Login</a></span> to add
+                                    review.</h6>
+                                <% }else{ %>
+                                    <h6><span> <a href="/auth/google" style="text-decoration:none;">Login!</a></span> to
+                                        be the first to review.</h6>
+                                    <% }%>
+                        </div>
+                        <% } %>
+
+                            <!-- Display reviews:-->
+                            <%if(place.reviews.length>0) {%>
+                                <span
+                                    style="font-family: cera-round-pro, 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 22px;">Reviews:</span>
+                                <%}%>
+                                    <div class="mb-3 ">
+                                        <% for(let re of place.reviews){ %>
+                                            <div class="card mb-3 p-2 border-light review_display"
+                                                style="background-color: rgba(255, 255, 255, 0.8);border: none;">
+                                                <h5 class="card-title ">
+                                                    <%= re.author.name %>
+                                                </h5>
+                                                <h6 class="starability-result" data-rating="<%= re.rating %>">
+                                                    Rated: <%= re.rating %> stars
+                                                        <!--This text is not shown to use imp for self accessibilty purposes -->
+                                                </h6>
+                                                <p class="card-text">
+                                                    <%= re.body %>
+                                                </p>
+                                                <% if (currentUser && re.author.equals(currentUser._id) ){%>
+                                                    <form
+                                                        action="/review/<%= place.id %>/delete/<%= re.id %>?_method=DELETE"
+                                                        method="post">
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                    <% } %>
+                                            </div>
+                                            <% } %>
+                                    </div>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <br />
+
+    <!-- <script src="/javascript/location.js"></script> -->
+
+    <script>
+        const place = <%- JSON.stringify(place) %>;
+        
+        var root = document.getElementById('menusection');
+        
+        const searchBar = document.getElementById('search');
+
+
+        // console.log(all);
+
+        searchBar.addEventListener('keyup', (e) => {
+            const searchString = e.target.value.toLowerCase();
+            let i = 0;
+            let indexarray = [];
+            const searchIndex = place.items.filter((character) => {
+                if (character.toLowerCase().includes(searchString)) {
+                    indexarray.push(i);
+                    i++;return true;}
+                i++;return false;
+            });
+
+
+            console.log(indexarray);
+            displayCharacters(indexarray);
+        })
+
+        const displayCharacters = (indexes) => {
+            if (indexes.length === 0) {
+                root.innerHTML = `
+                                    <div class="py-3">
+                                        <h3>No results have been found &#9785;</h3>
+                                    </div>`;
+                return 0;
+            };
+
+            const htmlString = indexes
+                .map((index) => {
+                    return `<div style="display: flex; justify-content: space-between;">
+                                <span style="padding: 10px;">
+                                    ${place.items[index]}
+                                </span>
+                                <span style="padding: 10px">
+                                    ${place.cost[index]}
+                                </span>
+                            </div>
+`;
+                })
+                .join('');
+
+            root.innerHTML =  htmlString;
+        };
+
+    </script>

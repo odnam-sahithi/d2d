@@ -1,0 +1,225 @@
+<% layout('layout/boilerplate') %>
+
+
+    <style>
+        body {
+            background-color: #EFFFFD;
+        }
+        .add{
+            text-decoration: none;
+            color: #404448;
+            font-weight: 400;
+            font-size: 18px;
+            padding: 3px;
+            background-color: #DDE0E3;
+            border: 1px solid #8d9491;
+            cursor: pointer;
+        }
+        .add:hover{
+            background-color: white;
+            border: 1px solid #939598;
+            color: black;     
+        }
+    </style>
+
+
+    <div class="container col-lg-6 col-md d-flex flex-column justify-content-center position-relative border border-light py-2"
+        style=" height: auto;">
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+
+                <h4 class="card-title text-center" style="font-family: monospace;">Edit Place</h4>
+
+                <form action="/place/<%= place.id %>?_method=PUT" method="post" enctype="multipart/form-data"
+                    class="needs-validation" novalidate>
+
+                    <div class="form-group mb-2">
+                        <label for="name1">Name</label>
+                        <input type="text" class="form-control" name="name" id="name1" value="<%= place.name %>"
+                            required>
+                        <div class="valid-feedback">
+                            Looks Great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please name the place.
+                        </div>
+                    </div>
+
+
+                    <div class="form-group mb-2">
+                        <label for="location1">Location</label>
+                        <input type="text" class="form-control" name="location" id="location1"
+                            value="<%=  place.location %>" required>
+                        <div class="valid-feedback">
+                            Looks Great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please add the location.
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group mb-2">
+                        <label for="description1">Description</label>
+                        <textarea class="form-control" id="description1" rows="3" name="description"
+                            required><%= place.description %></textarea>
+                        <div class="valid-feedback">
+                            Looks Great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide a description about the place.
+                        </div>
+                    </div>
+
+
+                    <div class="form-group mb-2">
+                        <label for="contact1">Contact:</label>
+                        <input type="number" class="form-control" name="contact" id="contact1"
+                            value="<%= place.contact %>" required>
+                        <div class="valid-feedback">
+                            Looks Great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please provide contact details.
+                        </div>
+                    </div>
+
+
+                    <div class="form-group mb-3">
+                        <label for="category1">Category</label>
+                        <select class="form-select" name="category" id="category1">
+                            <option value="groceryStore" <%=place.category==='groceryStore' ? 'selected' : '' %>>Grocery store</option>
+                            <option value="restaurant" <%=place.category==='restaurant' ? 'selected' : '' %>>Restaurant
+                            </option>
+                            <option value="stationary" <%=place.category==='stationary' ? 'selected' : '' %>>Stationary</option>
+                            <option value="sweetStall" <%=place.category==='sweetStall' ? 'selected' : '' %>>Sweet Stall
+                            </option>
+                            <option value="others" <%=place.category==='others' ? 'selected' : '' %>>Others</option>
+                        </select>
+                    </div>
+
+
+
+                    <div class="input-group mb-3 custom-file">
+                        <input type="file" class="form-control" id="images" name="images" multiple>
+                        <label for="images" class="custom-file-label form-control"></label>
+                        <div class="valid-feedback">
+                            Looks Great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please share few clicks of the place.
+                        </div>
+                    </div>
+
+
+                    <% if(place.images.length>0){%>
+                        <div class="mb-3">
+                            <p>Select images you want to delete.</p>
+                            <% place.images.forEach(function(img, i){ %>
+                                <img src="<%= img.url %>" alt="" class="img-thumbnail m-1">
+                                <div class="form-check-inline">
+                                    <input type="checkbox" id="image-<%= i %>" name="deleteImages[]"
+                                        value="<%= img.filename %>">
+                                    <!-- All checkbox have a same name ('deleteImages[]'), now if we check any checkbox, its value is added to deleteImages array.
+                                    Now if we check by console.log(req.body) (inside updateCamp in controllers) we see those values are added into deleteImages array. -->
+                                </div>
+                                <!-- We can add label too if we want--><label for="image-<%= i %>"></label>
+                                <!-- Instead of calling 'img.url' as src, we call 'img.thumbnail' as then we can apply transformation to it.-->
+                                <% }) %>
+                        </div>
+                        <% } %>
+
+                            <div class="container">
+                                <div class="wrap" style="display: flex;align-items: center;align-content: center;flex-wrap: nowrap;flex-direction: row;">
+                                    <h2 style="margin: 0 20px 0 0;font-family: monospace;">Menu</h2>
+                                    <!-- <span href="#" class="add" style="cursor: pointer;">&plus; </span>
+                                     -->
+                                    <p href="#" class="add" style="border-radius: 2px; margin: 0 20px 0 0;">Add</p>
+                                    <br>
+                                </div>
+
+                                <div class="inp-group">
+                                    <% var j=0 %>
+                                        <% for(let i of place.items) {%>
+
+                                            <div class="flex" style="display: flex;flex-wrap: nowrap;margin: 5px">
+                                                <input type="text" class="form-control" style="margin: 5px;"
+                                                    name="items" value="<%= i %>">
+                                                <input type="number" style="margin: 5px;" name="cost"
+                                                    class="form-control" value="<%= place.cost[j] %>">
+                                                <span onclick="(()=>this.parentElement.remove())()"
+                                                    style="color: red;margin: 8px 5px;font-size: 20px;cursor: pointer;">&#128465</span>
+                                            </div>
+                                            <% j++; %>
+                                                <% } %>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success my-2">Update</button>
+
+                </form>
+
+
+                <a href="/showAll">Back to Main page</a>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <script>
+        const addBtn = document.querySelector(".add");
+
+        const input = document.querySelector(".inp-group");
+
+        function removeInput() {
+            this.parentElement.remove();
+        }
+
+        function addInput() {
+            const name = document.createElement("input");
+            name.type = "text";
+            name.placeholder = "Item name";
+            name.setAttribute('name', 'items');
+            name.setAttribute('required', '');
+            name.setAttribute('class', "form-control");
+            name.style.margin = "5px";
+
+            const price = document.createElement("input");
+            price.type = "number";
+            price.placeholder = "price";
+            price.setAttribute('name', 'cost');
+            price.setAttribute('required', '');
+            price.setAttribute('class', "form-control");
+            price.style.margin = "5px";
+
+
+            const btn = document.createElement("span");
+            btn.className = "delete";
+            btn.innerHTML = "&#128465;";
+            btn.style.margin = "8px 5px";
+            btn.style.fontSize = "20px";
+            btn.style.cursor="pointer";
+
+            btn.addEventListener("click", removeInput);
+
+            const flex = document.createElement("div");
+            flex.className = "flex";
+            flex.style.display = "flex";
+            flex.style.flexWrap = "nowrap";
+            flex.style.margin = "5px";
+
+            input.appendChild(flex);
+            flex.appendChild(name);
+            flex.appendChild(price);
+            flex.appendChild(btn);
+            return false;
+        }
+
+
+
+        addBtn.addEventListener("click", addInput);
+    </script>
